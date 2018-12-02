@@ -10,6 +10,32 @@ Install
 
 You can install package by:
 
-```bash
-pip install bfa_django
+`pip install bfa`
+
+Usage
+=====
+
+For example:
+
+_views.py_
+```python
+def login(request):
+    if request.method == 'POST':
+        username = request.get('username')
+        fp = bfa.fingerprint.get(request)        
+        [...]
+        return HttpResponse("You're logged in!")
+    else:
+        fp_field = bfa.fingerprint.field
+        return render_to_response('login.html', 
+                                  {'fp_field': fp_field})
+```
+
+_login.html_
+```html
+<form method="post">
+    <input name="username">
+    {{ fp_field }}
+    <button type="submit">Log in</button>
+</form>
 ```
