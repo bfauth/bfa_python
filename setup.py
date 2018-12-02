@@ -19,17 +19,35 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="bfa_django",
-    version="0.1",
+    version="0.1.1",
     author="Artjom Löbsack",
     author_email="ceigh@pm.me",
+    license="Apache 2.0",
     description="Using user's browser fingerprint for authentication.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://gitlab.com/bfa/bfa_django",
+    keywords="django browser fingerprint authenticate",
     packages=setuptools.find_packages(),
+    project_urls={
+        "Source": "https://gitlab.com/bfa/bfa_django/tree/master",
+        "BFA": "https://gitlab.com/bfa",
+        "Say thanks": "https://saythanks.io/to/ceigh"
+
+    },
+    install_requires=[],
+    python_requires='>=3.6 <4',
     classifiers=[
         "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
         "License :: OSI Approved :: Apache Software License",
         "Operating System :: OS Independent",
+        "Development Status :: 2 - Pre-Alpha",
+        "Framework :: Django",
+        "Intended Audience :: Developers",
+        "Natural Language :: English",
+        "Topic :: Internet :: WWW/HTTP :: Session",
+        "Topic :: Software Development :: Libraries :: Python Modules"
     ],
 )
