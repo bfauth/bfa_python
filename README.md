@@ -21,21 +21,23 @@ _views.py_
 ```python
 def login(request):
     if request.method == 'POST':
-        username = request.get('username')
-        fp = bfa.fingerprint.get(request)        
+        username = request.POST.get('username')
+        try:
+            fp = bfa.fingerprint.get(request)
+        except (bfa.FingerprintError, bfa.JavaScriptError):
+            return HttpResponse("Can't get fingerprint")
         [...]
-        return HttpResponse("You're logged in!")
-    else:
-        fp_field = bfa.fingerprint.field
-        return render_to_response('login.html', 
-                                  {'fp_field': fp_field})
+        return HttpResponse("You're logged in")
+    return render(request, 'login.html',
+                  {'fp_field': bfa.fingerprint.field})
 ```
 
 _login.html_
 ```html
 <form method="post">
+    {% csrf_token %}
     <input name="username">
-    {{ fp_field }}
+    {{ fp_field|safe }}
     <button type="submit">Log in</button>
 </form>
 ```
