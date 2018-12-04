@@ -10,7 +10,7 @@ Install
 
 You can install package by:
 
-`pip install bfa`
+`pip3 install bfa`
 
 Usage
 =====
@@ -19,12 +19,18 @@ For example:
 
 _views.py_
 ```python
+import bfa
+
+from django.http import HttpResponse
+from django.shortcuts import render
+
+
 def login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         try:
             fp = bfa.fingerprint.get(request)
-        except (bfa.FingerprintError, bfa.JavaScriptError):
+        except (ConnectionError, ValueError):
             return HttpResponse("Can't get fingerprint")
         [...]
         return HttpResponse("You're logged in")

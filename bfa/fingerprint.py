@@ -12,15 +12,17 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License."""
 
-from .exceptions import JavaScriptError, FingerprintError
+from django.core.handlers.wsgi import WSGIRequest
 
 
 def get(request):
+    if type(request) != WSGIRequest:
+        raise TypeError("The function accepts only django request")
     fp = request.POST['fp']
     if fp == ' ':
-        raise JavaScriptError
+        raise ConnectionError("Failed to load JS on client")
     elif len(fp) != 64:
-        raise FingerprintError
+        raise ValueError("SHA256 fingerprint must be 64 symbols")
     else:
         return fp
 
