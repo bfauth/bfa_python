@@ -19,12 +19,6 @@ For example:
 
 _views.py_
 ```python
-import bfa
-
-from django.http import HttpResponse
-from django.shortcuts import render
-
-
 def login(request):
     if request.method == 'POST':
         username = request.POST.get('username')

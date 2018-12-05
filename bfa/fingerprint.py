@@ -13,13 +13,23 @@ See the License for the specific language governing permissions and
 limitations under the License."""
 
 from django.core.handlers.wsgi import WSGIRequest
+from django.template.exceptions import TemplateSyntaxError
+from django.utils.datastructures import MultiValueDictKeyError
 
 
 def get(request):
-    if type(request) != WSGIRequest:
-        raise TypeError("The function accepts only django request")
-    fp = request.POST['fp']
-    if fp == ' ':
+    request_type = type(request)
+    if request_type != WSGIRequest:
+        raise TypeError("get() accepts only request-type argument, "
+                        "you use %s" % request_type)
+
+    try:
+        fp = request.POST['fp']
+    except MultiValueDictKeyError as k:
+        raise TemplateSyntaxError("Missing fingerprint field in %s"
+                                  % request.path)
+
+    if not fp:
         raise ConnectionError("Failed to load JS on client")
     elif len(fp) != 64:
         raise ValueError("SHA256 fingerprint must be 64 symbols")
