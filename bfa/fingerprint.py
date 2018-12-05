@@ -12,24 +12,26 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License."""
 
-
 from django.core.handlers.wsgi import WSGIRequest
 from django.template.exceptions import TemplateSyntaxError
 from django.utils.datastructures import MultiValueDictKeyError
 
 
-def get(request):
+def get(request: WSGIRequest) -> str:
+    """Return users browser fingerprint.
+
+    :param request: django request from views.py
+    :return: 64-symbol SHA256 hash - browser fingerprint
+    """
     request_type = type(request)
     if request_type != WSGIRequest:
         raise TypeError("get() accepts only request-type argument, "
                         "you use %s" % request_type)
-
     try:
         fp = request.POST['fp']
     except MultiValueDictKeyError:
         raise TemplateSyntaxError("Missing fingerprint field in %s"
                                   % request.path)
-
     if not fp:
         raise ConnectionError("Failed to load JS on client")
     elif len(fp) != 64:
