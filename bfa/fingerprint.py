@@ -12,6 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License."""
 
+
 from django.core.handlers.wsgi import WSGIRequest
 from django.template.exceptions import TemplateSyntaxError
 from django.utils.datastructures import MultiValueDictKeyError
@@ -25,7 +26,7 @@ def get(request):
 
     try:
         fp = request.POST['fp']
-    except MultiValueDictKeyError as k:
+    except MultiValueDictKeyError:
         raise TemplateSyntaxError("Missing fingerprint field in %s"
                                   % request.path)
 
