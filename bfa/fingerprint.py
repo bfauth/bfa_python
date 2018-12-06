@@ -13,7 +13,7 @@ See the License for the specific language governing permissions and
 limitations under the License."""
 
 from django.core.handlers.wsgi import WSGIRequest
-from django.template.exceptions import TemplateSyntaxError
+from django.template import TemplateSyntaxError
 from django.utils.datastructures import MultiValueDictKeyError
 
 

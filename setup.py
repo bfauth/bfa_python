@@ -1,12 +1,11 @@
 import setuptools
 
-
-with open("README.md", "r") as fh:
+with open("README.md") as fh:
     long_description = fh.read()
 
 setuptools.setup(
     name="bfa",
-    version="0.2.2",
+    version="0.2.3",
     author="Artjom Löbsack",
     author_email="ceigh@pm.me",
     license="2.0",
@@ -16,13 +15,13 @@ setuptools.setup(
     url="https://gitlab.com/bfa/bfa_django",
     keywords="django fingerprint auth",
     packages=setuptools.find_packages(),
-    install_requires=['django>=2.1.4'],
-    python_requires='>=3, <4',
+    install_requires=['django>=1.6'],
+    python_requires='>=2.6, <4',
     project_urls={
         "BFA": "https://gitlab.com/bfa"
     },
     classifiers=[
-        "Programming Language :: Python :: 3",
+        "Programming Language :: Python",
         "License :: OSI Approved :: Apache Software License",
         "Operating System :: OS Independent",
         "Development Status :: 3 - Alpha",

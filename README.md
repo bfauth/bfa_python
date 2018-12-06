@@ -10,7 +10,7 @@ Install
 
 You can install package by:
 
-`pip3 install bfa`
+`pip install bfa`
 
 Usage
 =====
