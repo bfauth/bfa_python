@@ -5,4 +5,4 @@ test:
   before_script:
     - pip install -r requirements.txt
   script:
-    - python tests/tests.py
+    - python test/tests.py
