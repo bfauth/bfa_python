@@ -17,9 +17,7 @@ Usage
 
 You can get fingerprints by:
 
-```python
-bfa.fingerprint.get(request)
-```
+`bfa.fingerprint.get(request)`
 
 For example:
 
@@ -51,9 +49,9 @@ _login.html_
 Also
 =======
 You can salt fingerprints by:
-```python
-bfa.fingerprint.get(request, use_salt=True)
-```
+
+`bfa.fingerprint.get(request, use_salt=True)`
+
 For example:
 
 _views.py_
