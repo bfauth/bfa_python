@@ -1,6 +1,7 @@
 import os
 import sys
 import unittest
+from hashlib import sha3_256
 
 from django.core.handlers.wsgi import WSGIRequest
 from django.template import TemplateSyntaxError
@@ -17,6 +18,7 @@ class FingerprintGetTestMethods(unittest.TestCase):
         self.request = WSGIRequest(
             environ={'REQUEST_METHOD': 'POST',
                      'wsgi.input': FakePayload('')})
+        self.fp = sha3_256('bfa'.encode()).hexdigest()
 
     def test_wrong_argument(self):
         with self.assertRaises(TypeError):
@@ -37,10 +39,13 @@ class FingerprintGetTestMethods(unittest.TestCase):
             get(self.request)
 
     def test_good_fingerprint(self):
-        self.request.POST = {'fp': '740b4df14aaff505c865c\
-731fe5404874d350d06bfbaf925380f7587ccdb8053'}
-        self.assertEqual(get(self.request), '740b4df14aaf\
-f505c865c731fe5404874d350d06bfbaf925380f7587ccdb8053')
+        self.request.POST = {'fp': self.fp}
+        self.assertEqual(get(self.request), self.fp)
+
+    def test_salted_fp_len(self):
+        self.request.POST = {'fp': self.fp}
+        fp_len = len(get(self.request, use_salt=True)['fp'])
+        self.assertEqual(fp_len, 64)
 
 
 if __name__ == '__main__':

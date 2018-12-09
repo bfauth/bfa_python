@@ -15,6 +15,12 @@ You can install package by:
 Usage
 =====
 
+You can get fingerprints by:
+
+```python
+bfa.fingerprint.get(request)
+```
+
 For example:
 
 _views.py_
@@ -40,4 +46,29 @@ _login.html_
     {{ fp_field|safe }}
     <button type="submit">Log in</button>
 </form>
+```
+
+Also
+=======
+You can salt fingerprints by:
+```python
+bfa.fingerprint.get(request, use_salt=True)
+```
+For example:
+
+_views.py_
+```python
+def login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        try:
+            fp_data = bfa.fingerprint.get(request, use_salt=True)
+        except (ConnectionError, ValueError):
+            return HttpResponse("Can't get fingerprint")
+        fp = fp_data['fp']
+        salt = fp_data['salt']
+        [...]
+        return HttpResponse("You're logged in")
+    return render(request, 'login.html',
+                  {'fp_field': bfa.fingerprint.field})
 ```

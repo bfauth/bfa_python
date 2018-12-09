@@ -5,10 +5,10 @@ with open("README.md") as fh:
 
 setuptools.setup(
     name="bfa",
-    version="0.2.3",
+    version="0.3",
     author="Artjom Löbsack",
     author_email="ceigh@pm.me",
-    license="2.0",
+    license="Apache 2.0",
     description="Using user's browser fingerprint for authentication.",
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -26,7 +26,7 @@ setuptools.setup(
         "Programming Language :: Python :: 3"
         "License :: OSI Approved :: Apache Software License",
         "Operating System :: OS Independent",
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 4 - Beta",
         "Framework :: Django",
         "Intended Audience :: Developers",
         "Topic :: Software Development :: Libraries :: Python Modules"

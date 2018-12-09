@@ -12,21 +12,43 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License."""
 
+from hashlib import sha3_256
+from random import choices
+from string import printable
+
 from django.core.handlers.wsgi import WSGIRequest
 from django.template import TemplateSyntaxError
 from django.utils.datastructures import MultiValueDictKeyError
 
 
-def get(request: WSGIRequest) -> str:
+def _return_salted(string: str) -> tuple:
+    """Make string salty
+
+    :param string: your string to salt
+    :return: salted string and salt for it
+    """
+    primary_salt = ''.join(choices(printable, k=1024))
+    secondary_salt = sha3_256(primary_salt.encode()).hexdigest()
+    string = sha3_256(
+        ('%s%s' % (string, secondary_salt)).encode()
+    ).hexdigest()
+    return string, secondary_salt
+
+
+def get(request: WSGIRequest, use_salt: bool = False) -> str or dict:
     """Return users browser fingerprint.
 
     :param request: django request from views.py
-    :return: 64-symbol SHA256 hash - browser fingerprint
+    :param use_salt: parameter indicating whether
+                     to salt the fingerprint
+    :return: 64-symbol SHA3-256 hash - browser fingerprint
+             or dictionary, contains salted fingerprint and salt for
+             it, if use_salt=True
     """
     request_type = type(request)
     if request_type != WSGIRequest:
-        raise TypeError("get() accepts only request-type argument, "
-                        "you use %s" % request_type)
+        raise TypeError("get() argument must be WSGIRequest, not %s"
+                        % request_type)
     try:
         fp = request.POST['fp']
     except MultiValueDictKeyError:
@@ -37,14 +59,17 @@ def get(request: WSGIRequest) -> str:
     elif len(fp) != 64:
         raise ValueError("Fingerprint must be 64 symbols")
     else:
+        if use_salt:
+            fp, salt = _return_salted(fp)
+            return {'fp': fp, 'salt': salt}
         return fp
 
 
-field = """<script async src='https://cdnjs.cloudflare.com/ajax/libs/js-sha256\
-/0.9.0/sha256.min.js'></script>
+field = """<script async src='https://cdnjs.cloudflare.com/ajax/libs/js-sha3/0\
+.8.0/sha3.min.js'></script>
 <script src='https://cdn.jsdelivr.net/npm/fingerprintjs2@2.0.3/dist/fingerprin\
 t2.min.js'></script>
 <input type='hidden' name='fp'>
 <script>Fingerprint2.get(function(e){document.getElementsByName('fp')[0].value\
-=sha256(e.map(function(e){return e.value}).join())})</script>
+=sha3_256(e.map(function(e){return e.value}).join())})</script>
 """

@@ -3,6 +3,7 @@ image: python:3
 stages:
   - test
   - pack
+  - push
 
 test:
   stage: test
@@ -18,4 +19,14 @@ pack:
       - bfa/*
   artifacts:
     paths:
-      - dist/
+      - dist/*.gz
+      - dist/*.whl
+
+push:
+  stage: push
+  before_script:
+    - pip install twine
+  script: twine upload dist/*
+  only:
+    changes:
+      - bfa/*
