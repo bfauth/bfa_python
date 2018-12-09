@@ -9,7 +9,11 @@ test:
   stage: test
   before_script:
     - pip install -r requirements.txt
-  script: python test/tests.py
+    - pip install coverage
+  script:
+    - coverage run --source bfa/ -m unittest discover -s test/
+    - coverage report -m
+    - coverage erase
 
 pack:
   stage: pack
@@ -19,8 +23,7 @@ pack:
       - bfa/*
   artifacts:
     paths:
-      - dist/*.gz
-      - dist/*.whl
+      - dist/
 
 push:
   stage: push
