@@ -36,6 +36,12 @@ class FingerprintGetTestMethods(unittest.TestCase):
         with self.assertRaises(TemplateSyntaxError):
             get(self.request)
 
+    def test_good_fingerprint(self):
+        self.request.POST = {'fp': '740b4df14aaff505c865c\
+731fe5404874d350d06bfbaf925380f7587ccdb8053'}
+        self.assertEqual(get(self.request), '740b4df14aaf\
+f505c865c731fe5404874d350d06bfbaf925380f7587ccdb8053')
+
 
 if __name__ == '__main__':
     unittest.main()

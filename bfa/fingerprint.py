@@ -35,7 +35,7 @@ def get(request: WSGIRequest) -> str:
     if not fp:
         raise ConnectionError("Failed to load JS on client")
     elif len(fp) != 64:
-        raise ValueError("SHA256 fingerprint must be 64 symbols")
+        raise ValueError("Fingerprint must be 64 symbols")
     else:
         return fp
 
