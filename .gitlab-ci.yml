@@ -1,8 +1,21 @@
 image: python:3
 
+stages:
+  - test
+  - pack
+
 test:
   stage: test
   before_script:
     - pip install -r requirements.txt
-  script:
-    - python test/tests.py
+  script: python test/tests.py
+
+pack:
+  stage: pack
+  script: python setup.py sdist bdist_wheel
+  only:
+    changes:
+      - bfa/*
+  artifacts:
+    paths:
+      - dist/
