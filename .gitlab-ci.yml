@@ -13,7 +13,6 @@ test:
   script:
     - coverage run --source bfa/ -m unittest discover -s test/
     - coverage report -m
-    - coverage erase
 
 pack:
   stage: pack

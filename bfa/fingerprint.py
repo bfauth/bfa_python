@@ -27,12 +27,12 @@ def _return_salted(string: str) -> tuple:
     :param string: your string to salt
     :return: salted string and salt for it
     """
-    primary_salt = ''.join(choices(printable, k=1024))
-    secondary_salt = sha3_256(primary_salt.encode()).hexdigest()
+    salt = ''.join(choices(printable, k=1024))
+    salt = sha3_256(salt.encode()).hexdigest()
     string = sha3_256(
-        ('%s%s' % (string, secondary_salt)).encode()
+        ('%s%s' % (string, salt)).encode()
     ).hexdigest()
-    return string, secondary_salt
+    return string, salt
 
 
 def get(request: WSGIRequest, use_salt: bool = False) -> str or dict:
