@@ -70,3 +70,12 @@ def login(request):
     return render(request, 'login.html',
                   {'fp_field': bfa.fingerprint.field})
 ```
+
+Using
+=====
+
+This project uses:
+
+[Fingerprintjs2](https://github.com/Valve/fingerprintjs2 "Fingerprintjs2 repo")
+and
+[js-sha3](https://github.com/emn178/js-sha3 "js-sha3 repo")
