@@ -5,7 +5,7 @@ with open("README.md") as fh:
 
 setuptools.setup(
     name="bfa",
-    version="0.3",
+    version="0.3.1",
     author="Artjom Löbsack",
     author_email="ceigh@pm.me",
     license="Apache 2.0",
