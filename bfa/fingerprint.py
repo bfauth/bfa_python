@@ -1,4 +1,4 @@
-"""Copyright 2018 Artjom Löbsack
+"""Copyright 2019 Artjom Löbsack
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -63,13 +63,3 @@ def get(request: WSGIRequest, use_salt: bool = False) -> str or dict:
             fp, salt = _return_salted(fp)
             return {'fp': fp, 'salt': salt}
         return fp
-
-
-field = """<script async src='https://cdnjs.cloudflare.com/ajax/libs/js-sha3/0\
-.8.0/sha3.min.js'></script>
-<script src='https://cdn.jsdelivr.net/npm/fingerprintjs2@2.0.3/dist/fingerprin\
-t2.min.js'></script>
-<input type='hidden' name='fp'>
-<script>Fingerprint2.get(function(e){document.getElementsByName('fp')[0].value\
-=sha3_256(e.map(function(e){return e.value}).join())})</script>
-"""
