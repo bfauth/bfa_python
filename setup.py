@@ -5,11 +5,11 @@ with open("README.md") as fh:
 
 setuptools.setup(
     name="bfa",
-    version="1.0",
+    version="1.0.1",
     author="Artjom Löbsack",
     author_email="ceigh@pm.me",
     license="Apache 2.0",
-    description="Using user's browser fingerprint\
+    description="Using user's browser fingerprint \
 for authentication in django application.",
     long_description=long_description,
     long_description_content_type='text/markdown',
