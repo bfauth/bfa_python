@@ -30,13 +30,13 @@ def _return_salted(string: str) -> tuple:
     salt = ''.join(choices(printable, k=1024))
     salt = sha3_256(salt.encode()).hexdigest()
     string = sha3_256(
-        ('%s%s' % (string, salt)).encode()
+        '{}{}'.format(string, salt).encode()
     ).hexdigest()
     return string, salt
 
 
 def get(request: WSGIRequest, use_salt: bool = False) -> str or dict:
-    """Return users browser fingerprint.
+    """Return users browser fingerprint
 
     :param request: django request from views.py
     :param use_salt: parameter indicating whether
@@ -46,14 +46,17 @@ def get(request: WSGIRequest, use_salt: bool = False) -> str or dict:
              it, if use_salt=True
     """
     request_type = type(request)
+
     if request_type != WSGIRequest:
-        raise TypeError("get() argument must be WSGIRequest, not %s"
-                        % request_type)
+        raise TypeError("get() argument must be WSGIRequest, not {type}"
+                        .format(type=request_type))
+
     try:
         fp = request.POST['fp']
     except MultiValueDictKeyError:
-        raise TemplateSyntaxError("Missing fingerprint field in %s"
-                                  % request.path)
+        raise TemplateSyntaxError("Missing fingerprint field in {path}"
+                                  .format(path=request.path))
+
     if not fp:
         raise ConnectionError("Failed to load JS on client")
     elif len(fp) != 64:
@@ -62,4 +65,5 @@ def get(request: WSGIRequest, use_salt: bool = False) -> str or dict:
         if use_salt:
             fp, salt = _return_salted(fp)
             return {'fp': fp, 'salt': salt}
-        return fp
+        else:
+            return fp

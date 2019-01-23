@@ -1,43 +1,56 @@
 Browser fingerprint authenticate
 ================================
+This package allows you to obtain and use a user browser fingerprint for your web application as an authenticator.
 
-This package allows you to obtain and use a user 
-browser fingerprint for your web application as 
-an authenticator.
-
-Install
-=======
-
+# Install
 You can install package by:
 
 `pip install bfa`
 
-Then add app in INSTALLED_APPS in your settings.py:
-
-_settings.py_
-
+# Django
+Add `'bfa'` to your list of `INSTALLED_APPS` in _settings.py_:
 ```python
 INSTALLED_APPS = [
+    ...
     'bfa'
 ]
 ```
 
-Usage
-=====
+# Usage
+- You can get user fingerprint by:
 
-You can get user fingerprint by:
+    `bfa.fingerprint.get(request)`
 
-`bfa.fingerprint.get(request)`
+- In template paste inside `<form></form>`:
 
-In templates it's simple
+    `{% load bfa %}{% fingerprint_input %}`
 
-`{% load bfa %}{% fingerprint_input %}`
+**For example:**
 
-For example:
-
+_login.html_
+```html
+...
+<form method="post">
+    {% csrf_token %}
+    
+    <input name="username">
+    
+    {% load bfa %}
+    {% fingerprint_input %}
+    
+    <button type="submit">Log in</button>
+</form>
+...
+```
 _views.py_
-
 ```python
+import bfa
+from django.http import HttpResponse
+from django.shortcuts import render
+
+...
+
+
 def login(request):
     if request.method == 'POST':
         # Getting a username
@@ -51,36 +64,31 @@ def login(request):
         
         # Here is the part where you process the 
         # username and fingerprint, according to the database
+        ...
 
         return HttpResponse("You're logged in")
 
     return render(request, 'login.html')
+
+
+...
 ```
-
-
-_login.html_
-
-```html
-<form method="post">
-    {% csrf_token %}
-    <input name="username">
-    {% load bfa %}
-    {% fingerprint_input %}
-    <button type="submit">Log in</button>
-</form>
-```
-
-Also
-====
+# Also
 You can salt fingerprints by:
 
 `bfa.fingerprint.get(request, use_salt=True)`
 
-For example:
+**For example:**
 
 _views.py_
-
 ```python
+import bfa
+from django.http import HttpResponse
+from django.shortcuts import render
+
+...
+
+
 def login(request):
     if request.method == 'POST':
         # Getting a username
@@ -97,17 +105,23 @@ def login(request):
         
         # Here is the part where you process the 
         # username, fingerprint and salt, according to the database
+        ...
         
         return HttpResponse("You're logged in")
         
     return render(request, 'login.html')
+
+
+...
 ```
-
-Using
-=====
-
+# Using
 This project uses:
+- [Django](https://github.com/django/django "Python")
+- [FingerprintJS2](https://github.com/Valve/fingerprintjs2 "JS")
+- [JS-SHA3](https://github.com/emn178/js-sha3 "JS")
 
-[Fingerprintjs2](https://github.com/Valve/fingerprintjs2 "Fingerprintjs2 repo")
-and
-[js-sha3](https://github.com/emn178/js-sha3 "js-sha3 repo")
+# Supported python
+BFA working on python 3.x only
+
+# License
+This project is under Apache 2.0 license.
