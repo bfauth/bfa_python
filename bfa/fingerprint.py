@@ -27,8 +27,8 @@ def _return_salted(string: str) -> tuple:
     :param string: your string to salt
     :return: salted string and salt for it
     """
-    salt = ''.join(choices(printable, k=1024))
-    salt = sha3_256(salt.encode()).hexdigest()
+    primary_salt = ''.join(choices(printable, k=1024))
+    salt = sha3_256(primary_salt.encode()).hexdigest()
     string = sha3_256(
         '{}{}'.format(string, salt).encode()
     ).hexdigest()
