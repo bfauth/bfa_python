@@ -32,3 +32,4 @@ push:
   only:
     changes:
       - bfa/*
+      - bfa/templatetags/*
