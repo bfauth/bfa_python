@@ -1,11 +1,11 @@
 import setuptools
 
-with open("README.md") as fh:
-    long_description = fh.read()
+with open("README.md") as f:
+    long_description = f.read()
 
 setuptools.setup(
     name="bfa",
-    version="1.0.2",
+    version="1.1",
     author="Artjom Löbsack",
     author_email="ceigh@pm.me",
     license="Apache 2.0",

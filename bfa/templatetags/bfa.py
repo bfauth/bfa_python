@@ -25,9 +25,8 @@ def fingerprint_input() -> SafeText:
     :rtype: SafeText
     :return: raw html, which is embedded in the page
     """
-    html = mark_safe("<script src='https://cdnjs.cloudflare.com/ajax/libs/js-s\
-ha3/0.8.0/sha3.min.js' async></script><script src='https://cdn.jsdelivr.net/np\
-m/fingerprintjs2@2.0.3/dist/fingerprint2.min.js'></script><input type='hidden'\
-name='fp'><script>Fingerprint2.get(function(e){document.getElementsByName('fp'\
-)[0].value=sha3_256(e.map(function(e){return e.value}).join())})</script>")
-    return html
+    return mark_safe("<{1} src='{0}js-sha3' async></{1}><{1} src='{0}fingerpri\
+ntjs2@2'></{1}><input type='hidden' name='fp'><{1}>window.onload=function(){{F\
+ingerprint2.get(function(e){{document.getElementsByName('fp')[0].value=sha3_25\
+6(e.map(function(e){{return e.value}}).join())}})}}</{1}>"
+                     .format('https://cdn.jsdelivr.net/npm/', 'script'))

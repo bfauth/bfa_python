@@ -1,16 +1,16 @@
-import os
-import sys
 import unittest
 from hashlib import sha3_256
+from os import environ
+from sys import path
 
 from django.core.handlers.wsgi import WSGIRequest
 from django.template import TemplateSyntaxError
 from django.test.client import FakePayload
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
-sys.path.insert(0, os.path.abspath(
-    os.path.join(os.path.dirname(__file__), "..")))
+path.insert(0, '..')
 from bfa.fingerprint import get
+
+environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 
 
 class FingerprintGetTestMethods(unittest.TestCase):
@@ -20,6 +20,7 @@ class FingerprintGetTestMethods(unittest.TestCase):
                      'wsgi.input': FakePayload('')})
         self.fp = sha3_256('bfa'.encode()).hexdigest()
 
+    # noinspection PyTypeChecker
     def test_wrong_argument(self):
         with self.assertRaises(TypeError):
             get(dict)
