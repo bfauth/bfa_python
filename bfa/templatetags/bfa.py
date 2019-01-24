@@ -12,10 +12,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License."""
 
-from django.template import Library
+from django import template
 from django.utils.safestring import mark_safe, SafeText
 
-register = Library()
+register = template.Library()
 
 
 @register.simple_tag
