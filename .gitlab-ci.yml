@@ -20,6 +20,7 @@ pack:
   only:
     changes:
       - bfa/*
+      - bfa/templatetags/*
   artifacts:
     paths:
       - dist/
