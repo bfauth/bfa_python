@@ -16,4 +16,5 @@ from django.apps import AppConfig
 
 
 class BFAConfig(AppConfig):
+    """BFA application class"""
     name = 'bfa'

@@ -12,6 +12,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License."""
 
+from inspect import stack
+from typing import Dict
+
 from django.template import Library
 from django.utils.safestring import mark_safe, SafeText
 
@@ -19,14 +22,18 @@ register = Library()
 
 
 @register.simple_tag
-def fingerprint_input() -> SafeText:
+def fingerprint_input() -> Dict[str, SafeText]:
     """Load scripts and calculate the fingerprint
 
     :rtype: SafeText
     :return: raw html, which is embedded in the page
     """
-    return mark_safe("<{1} src='{0}js-sha3' async></{1}><{1} src='{0}fingerpri\
-ntjs2@2'></{1}><input type='hidden' name='fp'><{1}>window.onload=function(){{F\
-ingerprint2.get(function(e){{document.getElementsByName('fp')[0].value=sha3_25\
-6(e.map(function(e){{return e.value}}).join())}})}}</{1}>"
-                     .format('https://cdn.jsdelivr.net/npm/', 'script'))
+    if stack()[1][3] == 'bfa':
+        # noinspection PyTypeChecker
+        return {'fingerprint_input': fingerprint_input()}
+    else:
+        return mark_safe("<{1} src='{0}js-sha3' async></{1}><{1} src='{0}finge\
+rprintjs2@2'></{1}><input type='hidden' name='fp'><{1}>window.onload=function(\
+){{Fingerprint2.get(function(e){{document.getElementsByName('fp')[0].value=sha\
+3_256(e.map(function(e){{return e.value}}).join())}})}}</{1}>"
+                         .format('https://cdn.jsdelivr.net/npm/', 'script'))

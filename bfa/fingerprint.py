@@ -19,6 +19,7 @@ from string import printable
 from django.core.handlers.wsgi import WSGIRequest
 from django.template import TemplateSyntaxError
 from django.utils.datastructures import MultiValueDictKeyError
+from werkzeug.local import LocalProxy
 
 
 def _return_salted(string: str) -> tuple:
@@ -35,7 +36,8 @@ def _return_salted(string: str) -> tuple:
     return string, salt
 
 
-def get(request: WSGIRequest, use_salt: bool = False) -> str or dict:
+def get(request: WSGIRequest or LocalProxy,
+        use_salt: bool = False) -> str or dict:
     """Return users browser fingerprint
 
     :param request: django request from views.py
@@ -47,12 +49,16 @@ def get(request: WSGIRequest, use_salt: bool = False) -> str or dict:
     """
     request_type = type(request)
 
-    if request_type != WSGIRequest:
-        raise TypeError("get() argument must be WSGIRequest, not {type}"
-                        .format(type=request_type))
+    if request_type not in (LocalProxy, WSGIRequest):
+        raise TypeError(
+            "get() argument must be WSGIRequest or LocalProxy, not {type}"
+                .format(type=request_type)
+        )
 
     try:
         fp = request.POST['fp']
+    except AttributeError:
+        fp = request.form['fp']
     except MultiValueDictKeyError:
         raise TemplateSyntaxError("Missing fingerprint field in {path}"
                                   .format(path=request.path))
