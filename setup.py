@@ -19,7 +19,7 @@ with open("README.md") as f:
 
 setuptools.setup(
     name="bfa",
-    version="1.2",
+    version="1.2.1",
     author="Artjom Löbsack",
     author_email="ceigh@pm.me",
     license="Apache 2.0",
