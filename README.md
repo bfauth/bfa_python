@@ -100,7 +100,8 @@ app = Flask(__name__)
 
 
 @app.context_processor
-def bfa():
+# Don't change name of this function
+def bfa_flask():
     return bfa.templatetags.bfa.fingerprint_input()
 
 

@@ -16,8 +16,8 @@ from hashlib import sha3_256
 from random import choices
 from string import printable
 
+from django import template
 from django.core.handlers.wsgi import WSGIRequest
-from django.template import TemplateSyntaxError
 from django.utils.datastructures import MultiValueDictKeyError
 from werkzeug.local import LocalProxy
 
@@ -60,8 +60,9 @@ def get(request: WSGIRequest or LocalProxy,
     except AttributeError:
         fp = request.form['fp']
     except MultiValueDictKeyError:
-        raise TemplateSyntaxError("Missing fingerprint field in {path}"
-                                  .format(path=request.path))
+        raise template.TemplateSyntaxError(
+            "Missing fingerprint field in {path}"
+                .format(path=request.path))
 
     if not fp:
         raise ConnectionError("Failed to load JS on client")

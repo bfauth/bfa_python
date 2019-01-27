@@ -15,20 +15,20 @@ limitations under the License."""
 from inspect import stack
 from typing import Dict
 
-from django.template import Library
+from django import template
 from django.utils.safestring import mark_safe, SafeText
 
-register = Library()
+register = template.Library()
 
 
 @register.simple_tag
-def fingerprint_input() -> Dict[str, SafeText]:
+def fingerprint_input() -> Dict[str, SafeText] or SafeText:
     """Load scripts and calculate the fingerprint
 
     :rtype: SafeText
     :return: raw html, which is embedded in the page
     """
-    if stack()[1][3] == 'bfa':
+    if stack()[1][3] == 'bfa_flask':
         # noinspection PyTypeChecker
         return {'fingerprint_input': fingerprint_input()}
     else:
